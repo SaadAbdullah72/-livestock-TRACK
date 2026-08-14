@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+venv/
+.venv/
+.env
+.env.*
+.pytest_cache/
+.mypy_cache/
+.pyre/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Project runtime artifacts
+*.log
+*.sqlite3
+passports_data/*.json
+passports_data/*.jpg
+storage/**/*.jpg
+storage/**/*.png
+
+# Large ML assets
+*.pt
+*.onnx
+*.bin
