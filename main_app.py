@@ -1,6 +1,8 @@
 import hashlib
 import json
 import os
+from pathlib import Path
+
 import cv2
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 import numpy as np
@@ -11,15 +13,20 @@ import torchvision.models as models
 import torchvision.transforms as transforms
 from ultralytics import YOLO
 
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = BASE_DIR / "models" / "yolov8n.pt"
+if not MODEL_PATH.exists():
+    MODEL_PATH = BASE_DIR / "yolov8n.pt"
+
 app = FastAPI(title="Livestock Biometric Passport & Registration API")
 
 # 1. Storage Paths
-STORAGE_DIR = "passports_data"
-os.makedirs(STORAGE_DIR, exist_ok=True)
+STORAGE_DIR = BASE_DIR / "passports_data"
+STORAGE_DIR.mkdir(parents=True, exist_ok=True)
 
 # 2. Models Setup
 print("[INFO] Initializing Vision & Biometric Pipeline...")
-detector = YOLO("yolov8n.pt")
+detector = YOLO(str(MODEL_PATH))
 
 resnet = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
 feature_extractor = torch.nn.Sequential(*list(resnet.children())[:-1])
